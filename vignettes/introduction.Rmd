@@ -1,0 +1,24 @@
+---
+title: "Tidy budgeting"
+author: "Janus Valberg-Madsen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo=TRUE}
+library(dplyr)
+library(tidybudget)
+
+mybudget <- budget() %>% 
+  add_income("su", 5300, "grants", "Janus") %>% 
+  add_income("neas", 3500, "salary", "Janus") %>% 
+  add_expense("rent", 3700, "housing", "Janus") %>% 
+  add_expense("food", 1500, "groceries", "Janus")
+
+mybudget
+```
+

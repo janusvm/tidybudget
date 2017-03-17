@@ -36,7 +36,7 @@ add_income <- function(budget, name, amount, category, owner, months = 1:12) {
                      month = months,
                      amount = amount)
 
-  return(bind_rows(budget, new_item))
+  return(dplyr::bind_rows(budget, new_item))
 }
 
 #' @export
@@ -50,5 +50,5 @@ add_expense <- function(budget, name, amount, category, owner, months = 1:12) {
                      month = months,
                      amount = amount)
 
-  return(bind_rows(budget, new_item))
+  return(dplyr::bind_rows(budget, new_item))
 }
