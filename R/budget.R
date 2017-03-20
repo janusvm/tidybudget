@@ -4,6 +4,7 @@
 #'
 #' @examples bgt <- budget()
 #'
+#' @import dplyr
 #' @export
 budget <- function() {
   bgt <- tibble(name = character(),
@@ -17,6 +18,7 @@ budget <- function() {
 }
 
 
+#' @import dplyr
 #' @export
 mean.budget <- function(x, by = c("type", "category"), ...) {
   group_var <- match.arg(by)
@@ -27,8 +29,10 @@ mean.budget <- function(x, by = c("type", "category"), ...) {
   return(bgt_means)
 }
 
+
+#' @import dplyr
 #' @export
-print.budget <- function(x) {
+summary.budget <- function(x) {
   counts <- x %>% group_by(type) %>% summarise(count = n_distinct(name))
   n_income <- counts %>% filter(type == "income") %>% .[["count"]]
   n_expense <- counts %>% filter(type == "expense") %>% .[["count"]]
