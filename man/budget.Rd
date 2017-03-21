@@ -2,9 +2,12 @@
 % Please edit documentation in R/budget.R
 \name{budget}
 \alias{budget}
+\alias{is.budget}
 \title{Create new budget}
 \usage{
 budget()
+
+is.budget(x)
 }
 \value{
 An empty budget data frame.
