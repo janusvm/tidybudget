@@ -18,7 +18,20 @@ budget <- function() {
 }
 
 
-#' @import dplyr
+#' @rdname budget
+#' @export
+is.budget <- function(x) {
+  classes <- c("budget", "tbl_df", "tbl", "data.frame")
+  if (!(inherits(x, classes))) return(FALSE)
+  if (dim(x)[2] != 6) return(FALSE)
+  cols <- c("name", "type", "category", "owner", "month", "amount")
+  if (any(names(x) != cols)) return(FALSE)
+  return(TRUE)
+}
+
+#' @importFrom dplyr group_by summarise_at ungroup
+#' @importFrom magrittr "%>%"
+#'
 #' @export
 mean.budget <- function(x, by = c("type", "category"), ...) {
   group_var <- match.arg(by)
@@ -27,32 +40,4 @@ mean.budget <- function(x, by = c("type", "category"), ...) {
     summarise_at("amount", funs(sum(., na.rm = TRUE)/12)) %>%
     ungroup
   return(bgt_means)
-}
-
-
-#' @import dplyr
-#' @export
-summary.budget <- function(x) {
-  counts <- x %>% group_by(type) %>% summarise(count = n_distinct(name))
-  n_income <- counts %>% filter(type == "income") %>% .[["count"]]
-  n_expense <- counts %>% filter(type == "expense") %>% .[["count"]]
-
-  cat("Budget of", n_income, "incomes and", n_expense, "expenses.\n")
-  cat("\n")
-
-  totals <- x %>% group_by(type) %>% summarise(total = sum(amount))
-  total_income <- totals %>% filter(type == "income") %>% .[["total"]]
-  total_expenses <- totals %>% filter(type == "expense") %>% .[["total"]]
-
-  cat("Total annual income:", total_income, "\n")
-  cat("Total annual expenses:", total_expenses, "\n")
-  cat("Balance:", total_income - total_expenses, "\n")
-  cat("\n")
-
-  income_cats <- x %>% filter(type == "income") %>% .[["category"]] %>% unique
-  expense_cats <- x %>% filter(type == "expense") %>% .[["category"]] %>% unique
-
-  cat("Income categories:", paste(income_cats, collapse = ", "), "\n")
-  cat("Expense categories:", paste(expense_cats, collapse = ", "), "\n")
-
 }
